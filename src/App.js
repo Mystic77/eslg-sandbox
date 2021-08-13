@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { FormControl, Button, Table, InputGroup } from 'react-bootstrap';
 import FormContainer from './components/FormContainer';
 
@@ -69,13 +71,28 @@ const feedback = [
 // console.log(feedback);
 
 function App() {
+  const [feedbackState, setFeedbackState] = useState(feedback);
+
+  function updateHandler() {
+    console.log('You clicked update!');
+  }
+
   return (
     <FormContainer>
-      {feedback.map((feedbackItem) => (
+      {feedbackState.map((feedbackItem) => (
         <Table striped bordered hover>
           <thead>
             <tr>
-              <h4>{feedbackItem.category.toUpperCase()}</h4>
+              <h4>
+                <input
+                  type="text"
+                  placeholder={feedbackItem.category.toUpperCase()}
+                  onChange={(e) => {
+                    feedbackItem.category = e.target.value;
+                    setFeedbackState([...feedbackState]);
+                  }}
+                ></input>
+              </h4>
             </tr>
           </thead>
           <tbody>
@@ -94,7 +111,9 @@ function App() {
           </tbody>
         </Table>
       ))}
-      <Button size="lg">Update</Button>
+      <Button size="lg" onClick={updateHandler()}>
+        Update
+      </Button>
     </FormContainer>
   );
 }
