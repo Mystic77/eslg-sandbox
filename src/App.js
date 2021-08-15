@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { FormControl, Button, Table, InputGroup } from 'react-bootstrap';
+import { Form, FormControl, Button, Table, InputGroup } from 'react-bootstrap';
 import FormContainer from './components/FormContainer';
 
 const feedback = [
@@ -73,47 +73,43 @@ const feedback = [
 function App() {
   const [feedbackState, setFeedbackState] = useState(feedback);
 
-  function updateHandler() {
-    console.log('You clicked update!');
-  }
+  // function updateHandler() {
+  //   console.log('You clicked update!');
+  // }
 
   return (
     <FormContainer>
       {feedbackState.map((feedbackItem) => (
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <h4>
-                <input
-                  type="text"
-                  placeholder={feedbackItem.category.toUpperCase()}
-                  onChange={(e) => {
-                    feedbackItem.category = e.target.value;
-                    setFeedbackState([...feedbackState]);
-                  }}
-                ></input>
-              </h4>
-            </tr>
-          </thead>
-          <tbody>
-            {feedbackItem.mainText.map((mainText, index) => (
-              <tr>
-                <InputGroup>
-                  <InputGroup.Text>{index}/5</InputGroup.Text>
-                  <FormControl
-                    as="textarea"
-                    aria-label=""
-                    placeholder={mainText}
-                  />
-                </InputGroup>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <Form>
+          <h4>
+            <input
+              type="text"
+              value={feedbackItem.category}
+              onChange={(e) => {
+                feedbackItem.category = e.target.value;
+                setFeedbackState([...feedbackState]);
+                console.log(feedbackState);
+              }}
+            ></input>
+          </h4>
+          {feedbackItem.mainText.map((mainText, index) => (
+            <InputGroup>
+              <InputGroup.Text>{index}/5</InputGroup.Text>
+              <FormControl
+                as="textarea"
+                aria-label=""
+                value={mainText}
+                onChange={(e) => {
+                  feedbackItem.mainText[index] = e.target.value;
+                  setFeedbackState([...feedbackState]);
+                  console.log(feedbackState);
+                }}
+              />
+            </InputGroup>
+          ))}
+        </Form>
       ))}
-      <Button size="lg" onClick={updateHandler()}>
-        Update
-      </Button>
+      <Button size="lg">Update</Button>
     </FormContainer>
   );
 }
